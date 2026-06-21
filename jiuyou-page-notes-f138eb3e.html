@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九游 · 再访收藏夹</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f2f4f8;
+            color: #1e1f26;
+            line-height: 1.6;
+        }
+
+        /* 深色头图区域 */
+        .hero {
+            background: linear-gradient(135deg, #0d0e1a 0%, #1a1c2e 50%, #252840 100%);
+            color: #e8eaf0;
+            padding: 4rem 1.5rem 3.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(100, 180, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 strong {
+            font-weight: 600;
+            color: #aac9ff;
+        }
+
+        .hero .sub {
+            font-size: 1.05rem;
+            opacity: 0.8;
+            max-width: 640px;
+            margin: 0.5rem auto 0;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 0.75rem;
+            display: inline-block;
+        }
+
+        .main-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+        }
+
+        /* 信息卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
+            margin-bottom: 3.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.8rem 1.6rem 1.6rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.25s;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 20, 50, 0.08);
+        }
+
+        .card .emoji {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.3px;
+        }
+
+        .card p {
+            color: #3d404a;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .card .tag {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #6d7188;
+            background: #f0f2f6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+
+        /* 强调色用于链接 */
+        a {
+            color: #2c6eb0;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        a:hover {
+            color: #1b4a7a;
+            border-bottom-color: #1b4a7a;
+        }
+
+        /* 自然链接段落 */
+        .natural-links {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            margin-bottom: 2.2rem;
+            border: 1px solid #eaeef3;
+        }
+
+        .natural-links p {
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            color: #2b2d38;
+        }
+
+        .natural-links p:last-child {
+            margin-bottom: 0;
+        }
+
+        .natural-links .highlight {
+            font-weight: 500;
+            color: #1e3a63;
+        }
+
+        .faq-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2.5rem;
+            background: #f8faff;
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            margin-top: 1.8rem;
+            border: 1px solid #dfe6f0;
+        }
+
+        .faq-item {
+            flex: 1 1 200px;
+        }
+
+        .faq-item dt {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1d2b44;
+            margin-bottom: 0.2rem;
+        }
+
+        .faq-item dd {
+            font-size: 0.9rem;
+            color: #4b4f62;
+            margin: 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 1.5rem 1rem 2.5rem;
+            color: #6b7087;
+            font-size: 0.85rem;
+            border-top: 1px solid #dde1ea;
+            margin-top: 1.5rem;
+        }
+
+        .footer-note a {
+            color: #2c6eb0;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            border: 1px solid #2c6eb0;
+            color: #2c6eb0;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            background: transparent;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #2c6eb0;
+            color: #fff;
+            border-color: #2c6eb0;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cdd4e0, transparent);
+            margin: 2.2rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 深色头图 -->
+    <header class="hero">
+        <h1><strong>九游</strong> · 再次收藏的理由</h1>
+        <div class="sub">资讯与工具聚合 · 常访常新</div>
+    </header>
+
+    <div class="main-wrap">
+
+        <!-- 信息卡片 -->
+        <div class="card-grid">
+            <div class="card">
+                <span class="emoji">📌</span>
+                <h3>持续更新的动态</h3>
+                <p>游戏库、评测和活动信息保持迭代，适合每隔一段时间回来翻看。收藏后可以快速获取新内容。</p>
+                <span class="tag">信息流</span>
+            </div>
+            <div class="card">
+                <span class="emoji">🧰</span>
+                <h3>轻量实用工具</h3>
+                <p>内置进度追踪、组合检索、版本备忘等模块，无需额外下载，打开即用，降低再次查找的成本。</p>
+                <span class="tag">效率</span>
+            </div>
+            <div class="card">
+                <span class="emoji">👥</span>
+                <h3>适合哪些人群</h3>
+                <p>关注游戏资讯的玩家、需要整理游戏库的爱好者、以及习惯用收藏夹管理数字资源的人。</p>
+                <span class="tag">人群画像</span>
+            </div>
+        </div>
+
+        <!-- 自然链接段落 + 嵌入 九游 链接 -->
+        <div class="natural-links">
+            <p>
+                如果你曾把 <a href="https://jiuyou-page.com">九游</a> 加入书签，或许是因为某个攻略或工具页。站点本身不依赖推送，更适合主动回访的用户——每次打开都能看到增量内容，而无需重新搜索。
+            </p>
+            <p>
+                从实用角度看，固定入口能减少信息碎片。把<a href="https://jiuyou-page.com">九游</a>放在浏览器收藏栏或笔记应用里，相当于保留了一个可随时翻阅的轻量仪表盘。
+            </p>
+            <p>
+                而且，一些隐藏较深的功能（如历史版本对比、自定义标签）只在页面内嵌，没有单独入口，<span class="highlight">常访者</span>往往能发现更多细节。这也是为什么我们建议持续关注。
+            </p>
+        </div>
+
+        <!-- FAQ 摘要 -->
+        <dl class="faq-mini">
+            <div class="faq-item">
+                <dt>为什么要再次访问？</dt>
+                <dd>内容会不定期补充，包括新游评测、工具更新和页面优化，每次回访可能有微小但有用的变化。</dd>
+            </div>
+            <div class="faq-item">
+                <dt>适合用手机浏览吗？</dt>
+                <dd>布局已适配常用屏幕宽度，卡片和文字在手机上依然清晰，链接易于点按。</dd>
+            </div>
+            <div class="faq-item">
+                <dt>如何保持关注？</dt>
+                <dd>建议将 <a href="https://jiuyou-page.com">九游</a> 加入浏览器书签或笔记工具，无需注册即可随时查看。</dd>
+            </div>
+        </dl>
+
+        <!-- 额外提示区块，增加信息密度 -->
+        <hr>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.8rem; align-items: flex-start;">
+            <div style="flex: 2 1 260px;">
+                <p style="font-size: 0.95rem; color: #2d3140;">
+                    从收藏夹到再次打开，中间可能隔了几周甚至几个月。一个好的信息页面应该让每次回访都有收获，而不是重复相同的内容。<br>
+                    如果你也习惯用书签管理网络资源，<a href="https://jiuyou-page.com">九游</a> 或许能成为其中一个值得长期保留的节点。
+                </p>
+            </div>
+            <div style="flex: 1 1 140px; text-align: right;">
+                <span class="btn-outline" style="pointer-events: none; opacity: 0.8;">📎 书签推荐</span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer-note">
+        <span>内容持续迭代 · <a href="https://jiuyou-page.com">九游</a></span>
+        <span style="display: inline-block; margin: 0 0.6rem;">·</span>
+        <span>无需注册，直接使用</span>
+    </footer>
+
+</body>
+</html>
